@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import type { OfferType } from '../../types';
 import { PlaceCard } from '../PlaceCard/PlaceCard';
-import { CardPrefix } from '../../const';
+import { Pages } from '../../const';
 import { AuthStatus } from '../../authStatus';
 import { useSelector } from 'react-redux';
 import type { State } from '../../store/types';
@@ -25,7 +25,7 @@ export const OfferList: FC<OffersTypeProps> = ({ authStatus }) => {
           offerData={offer}
           onMouseEnter={() => setActiveOffer(offer.id)}
           onMouseLeave={() => setActiveOffer(null)}
-          prefix={CardPrefix.MAIN}
+          page={Pages.MAIN}
           authStatus={authStatus}
         />))}
     </div>
