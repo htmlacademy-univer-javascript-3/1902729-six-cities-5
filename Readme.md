@@ -3,9 +3,7 @@
 * Студент: [Татьяна Колбина](https://up.htmlacademy.ru/univer-js3/5/user/1902729).
 <<<<<<< Updated upstream
 * Наставник: `Артёмм Хрушков`.
-=======
-* Наставник: `Артеем Хрушков`.
->>>>>>> Stashed changes
+
 
 ---
 
