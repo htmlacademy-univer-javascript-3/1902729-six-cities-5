@@ -68,3 +68,7 @@ export const CITIES_COORDS: Record<string, City> = {
     }
   }
 };
+
+export enum APIRoute {
+  offers = '/offers',
+}

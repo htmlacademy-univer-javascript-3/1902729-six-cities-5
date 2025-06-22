@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { FC, useEffect } from 'react';
+=======
+import { FC, useState } from 'react';
+>>>>>>> Stashed changes
 import { OfferList } from '../../components/OfferList/OfferList';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../routes';
@@ -6,28 +10,32 @@ import { AuthStatus } from '../../authStatus';
 import { Map } from '../../components/Map/Map';
 import { CITIES_COORDS } from '../../const';
 import { CitiesTabs } from '../../components/CitiesTabs/CitiesTabs';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NoPlaces } from '../../components/NoPlaces/NoPlaces';
+<<<<<<< Updated upstream
 import { State, Dispatch } from '../../store/types';
 import { OFFERS } from '../../mocks/offers';
 import { setOffers } from '../../store/action';
+=======
+import { State } from '../../store/types';
+import { SortVariants } from '../../components/SortVariants/SortVariants';
+import { SortProvider } from '../../context/sort-context';
+import { Spinner } from '../../components/Spinner/Spinner';
+>>>>>>> Stashed changes
 
 type MainProps = {
   authStatus: AuthStatus;
 }
 
 export const Main: FC<MainProps> = ({ authStatus }) => {
-  const dispatch = useDispatch<Dispatch>();
-  useEffect(() => {
-    dispatch(setOffers(OFFERS));
-  }, [dispatch]);
-
   const city = useSelector((state: State) => state.city);
   const allOffers = useSelector((state: State) => state.offers);
 
   const offersInCity = allOffers.filter((offer) => offer.city.name === city);
   const favoritesCount = allOffers.filter((offer) => offer.isFavorite).length;
   const mapPoints = offersInCity.map((offer) => offer.location);
+
+  const isOffersLoading = useSelector((state: State) => state.isOffersLoading);
 
   return (
     <div className="page page--gray page--main">
@@ -60,10 +68,11 @@ export const Main: FC<MainProps> = ({ authStatus }) => {
         </div>
       </header>
 
-      <main className={`page__main page__main--index ${offersInCity.length === 0 ? 'page__main--index-empty' : ''}`}>
+      <main className={`page__main page__main--index ${(!isOffersLoading && offersInCity.length === 0) ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <CitiesTabs />
         <div className="cities">
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
           <div className="cities__places-container container">
             <section className="cities__places places">
@@ -119,6 +128,39 @@ export const Main: FC<MainProps> = ({ authStatus }) => {
           ) : (
             <NoPlaces city={offersInCity[0]?.city.name} />
           )}
+=======
+          {(() => {
+            if (isOffersLoading) {
+              return <Spinner />;
+            }
+
+            if (offersInCity.length > 0) {
+              return (
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">
+                      {offersInCity.length} {offersInCity.length === 1 ? 'place' : 'places'} to stay in {offersInCity[0].city.name}
+                    </b>
+                    <SortProvider>
+                      <SortVariants />
+                      <OfferList authStatus={authStatus} onOfferHover={setActiveOfferId} />
+                    </SortProvider>
+                  </section>
+                  <div className="cities__right-section">
+                    <Map
+                      city={CITIES_COORDS[offersInCity[0].city.name]}
+                      offers={offersInCity}
+                      activePointId={activeOfferId}
+                    />
+                  </div>
+                </div>
+              );
+            }
+
+            return <NoPlaces city={city} />;
+          })()}
+>>>>>>> Stashed changes
         </div>
       </main>
     </div>

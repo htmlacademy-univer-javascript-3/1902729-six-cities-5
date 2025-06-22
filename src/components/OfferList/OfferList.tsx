@@ -5,6 +5,11 @@ import { Pages } from '../../const';
 import { AuthStatus } from '../../authStatus';
 import { useSelector } from 'react-redux';
 import type { State } from '../../store/types';
+<<<<<<< Updated upstream
+=======
+import { useSort } from '../../hooks/useSort';
+import { Spinner } from '../Spinner/Spinner';
+>>>>>>> Stashed changes
 
 type OffersTypeProps = {
   authStatus: AuthStatus;
@@ -16,6 +21,12 @@ export const OfferList: FC<OffersTypeProps> = ({ authStatus }) => {
   const offers = useSelector((state: State) =>
     state.offers.filter((offer: OfferType) => offer.city.name === city)
   );
+
+  const isOffersLoading = useSelector((state: State) => state.isOffersLoading);
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="cities__places-list places__list tabs__content">
