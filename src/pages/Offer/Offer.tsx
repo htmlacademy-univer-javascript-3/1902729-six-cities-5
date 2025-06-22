@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 export const Offer = () => (
   <div className="page">
     <header className="header">
@@ -49,6 +50,55 @@ export const Offer = () => (
             </div>
             <div className="offer__image-wrapper">
               <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio" />
+=======
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AppRoutes } from '../../routes';
+import { FC, useEffect, useState } from 'react';
+import { getOfferById, OFFERS } from '../../mocks/offers';
+import { Rating } from '../../components/Rating/Rating';
+import { capitalize } from '../../utils';
+import { ReviewForm } from '../../components/ReviewForm/ReviewForm';
+import { AuthStatus } from '../../authStatus';
+import type { Review, OfferType } from '../../types';
+import { ReviewList } from '../../components/ReviewList/ReviewList';
+import { REVIEWS } from '../../mocks/review';
+import { Map } from '../../components/Map/Map';
+import { PlacesNearby } from '../../components/PlacesNearby/PlacesNearby';
+
+type OfferProps = {
+  authStatus: AuthStatus;
+}
+
+export const Offer: FC<OfferProps> = ({ authStatus }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [offerData, setOfferData] = useState<OfferType | null>(null);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [offersNearby, setoOffersNearby] = useState<OfferType[] | []>([]);
+
+  useEffect(() => {
+    if (id) {
+      setOfferData(getOfferById(id));
+      setReviews(REVIEWS);
+      setoOffersNearby(OFFERS.filter((offer) => offer.id !== id));
+    }
+  }, [id]);
+
+  if (!id) {
+    navigate(AppRoutes.Empty);
+  }
+
+  return (
+    <div className="page">
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <Link className="header__logo-link" to={AppRoutes.Main}>
+                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
+              </Link>
+>>>>>>> Stashed changes
             </div>
           </div>
         </div>
@@ -138,6 +188,7 @@ export const Offer = () => (
                     Pro
                 </span>
               </div>
+<<<<<<< Updated upstream
               <div className="offer__description">
                 <p className="offer__text">
                     A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
@@ -221,6 +272,19 @@ export const Offer = () => (
               </form>
             </section>
           </div>
+=======
+              <section className="offer__reviews reviews">
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews?.length}</span></h2>
+                { reviews && reviews.length > 0 && <ReviewList reviews={reviews.slice(0, 10)}/>}
+                { authStatus === AuthStatus.Auth ? <ReviewForm /> : null}
+              </section>
+            </div>
+          </div>
+          { offerData && <Map classPrefix='offer' points={offersNearby.map((offer) => offer.location)} city={offerData?.city} />}
+        </section>
+        <div className="container">
+          <PlacesNearby offersNearby={offersNearby} />
+>>>>>>> Stashed changes
         </div>
         <section className="offer__map map"></section>
       </section>

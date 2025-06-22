@@ -102,7 +102,11 @@ export const Main: FC<MainProps> = ({ offerCount }) => {
               </div>
             </section>
             <div className="cities__right-section">
+<<<<<<< Updated upstream
               <section className="cities__map map"></section>
+=======
+              <Map city={CITY} points={mapPoints} classPrefix='cities' />
+>>>>>>> Stashed changes
             </div>
           </div>
         </div>
