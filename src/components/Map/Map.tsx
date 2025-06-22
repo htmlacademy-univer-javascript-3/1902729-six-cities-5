@@ -1,44 +1,58 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useRef, useEffect } from 'react';
-import { OfferPreviewType } from '../../types/offer-preview';
-import { currentCustomIcon, defaultCustomIcon } from './pin';
-import useMap from '../../hooks/hooks';
+import type { City, Location } from '../../types';
+import { FC, useEffect, useRef } from 'react';
+import { useMap } from '../../hooks/useMap';
+import { DEFAULT_ICON } from './Map.const';
 
 type MapProps = {
-  offers: OfferPreviewType[];
-  city: OfferPreviewType['city'];
-  activeOffer: OfferPreviewType['id'] | null;
+  city: City;
+  points: Location[];
+  classPrefix: string;
 }
 
-const Map = ({offers, city, activeOffer}: MapProps): JSX.Element => {
+const defaultIcon = leaflet.icon({
+  iconUrl: DEFAULT_ICON,
+  iconSize: [27, 39],
+  iconAnchor: [27, 39],
+});
+
+export const Map: FC<MapProps> = ({ city, points, classPrefix }) => {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const { map } = useMap(mapRef, city);
   const markersRef = useRef<leaflet.Marker[]>([]);
 
   useEffect(() => {
-    if (map) {
-      offers.forEach((offer) => {
-        const marker = leaflet
-          .marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          }, {
-            icon: offer.id === activeOffer ? currentCustomIcon : defaultCustomIcon,
-          })
-          .addTo(map);
-        markersRef.current.push(marker);
-      });
-      return () => {
-        markersRef.current.forEach((marker) => map.removeLayer(marker));
-        markersRef.current = [];
-      };
+    if (!map) {
+      return;
     }
-  }, [map, offers, activeOffer]);
+
+    points.forEach((point) => {
+      const marker = leaflet
+        .marker(
+          {
+            lat: point.latitude,
+            lng: point.longitude,
+          },
+          {
+            icon: defaultIcon,
+          })
+        .addTo(map);
+
+      markersRef.current.push(marker);
+    });
+
+    return () => {
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+    };
+  }, [points, map]);
 
   return (
-    <div style={{width: '100%', height: '100%'}} ref={mapRef}></div>
+    <section
+      className={`${classPrefix}__map map`}
+      ref={mapRef}
+    >
+    </section>
   );
 };
-
-export default Map;

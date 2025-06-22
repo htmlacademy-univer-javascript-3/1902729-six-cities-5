@@ -1,28 +1,10 @@
-const enum AppRoute {
-  Main = '/',
-  Login = '/login',
-  Favorites = '/favorites',
-  Offer = '/offer',
-  NotFound = '/*'
+import { RatingValue } from './types';
+
+export enum Pages {
+  MAIN = 'main',
+  FAVORITES = 'favorites',
+  OFFER = 'offer'
 }
 
-const enum CityName {
-  Paris = 'Paris',
-  Cologne = 'Cologne',
-  Brussels = 'Brussels',
-  Amsterdam = 'Amsterdam',
-  Hamburg = 'Hamburg',
-  Dusseldorf = 'Dusseldorf'
-}
+export const RATING_VALUES: RatingValue[] = [5, 4, 3, 2, 1];
 
-const URL_MARKER_DEFAULT = 'img/pin.svg';
-const URL_MARKER_CURRENT = 'img/pin-active.svg';
-
-enum SortingType {
-  Popular = 'Popular',
-  LowToHigh = 'Price: low to high',
-  HighToLow = 'Price: high to low',
-  TopRated = 'Top rated first'
-}
-
-export {AppRoute, CityName, URL_MARKER_CURRENT, URL_MARKER_DEFAULT, SortingType};
