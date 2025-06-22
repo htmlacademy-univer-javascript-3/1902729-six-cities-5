@@ -1,14 +1,14 @@
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import type { City, Location } from '../../types';
+import type { City, OfferType } from '../../types';
 import { FC, useEffect, useRef } from 'react';
 import { useMap } from '../../hooks/useMap';
-import { DEFAULT_ICON } from './Map.const';
+import { DEFAULT_ICON, ACTIVE_ICON } from './Map.const';
 
 type MapProps = {
   city: City;
-  points: Location[];
-  classPrefix: string;
+  offers: OfferType[];
+  activePointId: string | null;
 }
 
 const defaultIcon = leaflet.icon({
@@ -17,7 +17,13 @@ const defaultIcon = leaflet.icon({
   iconAnchor: [27, 39],
 });
 
-export const Map: FC<MapProps> = ({ city, points, classPrefix }) => {
+const activeIcon = leaflet.icon({
+  iconUrl: ACTIVE_ICON,
+  iconSize: [27, 39],
+  iconAnchor: [27, 39],
+});
+
+export const Map: FC<MapProps> = ({ city, offers, activePointId }) => {
   const mapRef = useRef(null);
   const { map } = useMap(mapRef, city);
   const markersRef = useRef<leaflet.Marker[]>([]);
@@ -27,15 +33,15 @@ export const Map: FC<MapProps> = ({ city, points, classPrefix }) => {
       return;
     }
 
-    points.forEach((point) => {
+    offers.forEach((offer) => {
       const marker = leaflet
         .marker(
           {
-            lat: point.latitude,
-            lng: point.longitude,
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
           },
           {
-            icon: defaultIcon,
+            icon: offer.id === activePointId ? activeIcon : defaultIcon
           })
         .addTo(map);
 
@@ -46,11 +52,11 @@ export const Map: FC<MapProps> = ({ city, points, classPrefix }) => {
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
     };
-  }, [points, map]);
+  }, [offers, map, activePointId]);
 
   return (
     <section
-      className={`${classPrefix}__map map`}
+      className="cities__map map"
       ref={mapRef}
     >
     </section>
