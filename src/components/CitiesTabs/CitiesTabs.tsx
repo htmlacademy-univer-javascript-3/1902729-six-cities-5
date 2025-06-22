@@ -1,3 +1,5 @@
+<<<<<<< Updated upstream
+=======
 import { FC } from 'react';
 import { CITIES } from '../../const';
 import { CityTab } from '../CityTab/CityTab';
@@ -11,3 +13,4 @@ export const CitiesTabs: FC = () => (
     </section>
   </div>
 );
+>>>>>>> Stashed changes
